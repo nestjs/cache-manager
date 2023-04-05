@@ -1,0 +1,23 @@
+# source
+lib
+tests
+index.ts
+
+# misc
+package-lock.json
+tslint.json
+tsconfig.json
+.prettierrc
+.husky
+docker-compose.yml
+.release-it.json
+.eslintignore
+.eslintrc.js
+
+# github
+.github
+CONTRIBUTING.md
+renovate.json
+
+# ci
+.circleci
