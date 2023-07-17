@@ -54,7 +54,9 @@ export class CacheInterceptor implements NestInterceptor {
   ): Promise<Observable<any>> {
     const key = this.trackBy(context);
     const ttlValueOrFactory =
-      this.reflector.get(CACHE_TTL_METADATA, context.getHandler()) ?? null;
+      this.reflector.get(CACHE_TTL_METADATA, context.getHandler()) ??
+      this.reflector.get(CACHE_TTL_METADATA, context.getClass()) ??
+      null;
 
     if (!key) {
       return next.handle();
