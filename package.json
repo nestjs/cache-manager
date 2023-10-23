@@ -30,7 +30,7 @@
     "@types/supertest": "2.0.12",
     "@typescript-eslint/eslint-plugin": "6.5.0",
     "@typescript-eslint/parser": "6.5.0",
-    "cache-manager": "5.2.3",
+    "cache-manager": "5.2.4",
     "cache-manager-redis-store": "^3.0.1",
     "eslint": "8.48.0",
     "eslint-config-prettier": "9.0.0",
