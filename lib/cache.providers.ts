@@ -2,7 +2,7 @@ import { Provider } from '@nestjs/common';
 import { loadPackage } from '@nestjs/common/utils/load-package.util';
 import { CACHE_MANAGER } from './cache.constants';
 import { MODULE_OPTIONS_TOKEN } from './cache.module-definition';
-import { defaultCacheOptions } from './default-options';
+import { defaultCacheOptions as defaultCacheOptionsOrigin } from './default-options';
 import {
   CacheManagerOptions,
   CacheStore,
@@ -17,6 +17,7 @@ export function createCacheManager(): Provider {
   return {
     provide: CACHE_MANAGER,
     useFactory: async (options: CacheManagerOptions) => {
+      const defaultCacheOptions = { ...defaultCacheOptionsOrigin };
       const cacheManager = loadPackage('cache-manager', 'CacheModule', () =>
         require('cache-manager'),
       );
