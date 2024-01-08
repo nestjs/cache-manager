@@ -86,6 +86,7 @@ export class CacheInterceptor implements NestInterceptor {
           } catch (err) {
             Logger.error(
               `An error has occurred when inserting "key: ${key}", "value: ${response}"`,
+              err.stack,
               'CacheInterceptor',
             );
           }
