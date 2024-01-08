@@ -1,4 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
+import type { Cache as CoreCache } from 'cache-manager'
 import { CACHE_MANAGER } from './cache.constants';
 import { ConfigurableModuleClass } from './cache.module-definition';
 import { createCacheManager } from './cache.providers';
@@ -8,6 +9,15 @@ import {
 } from './interfaces/cache-module.interface';
 
 /**
+ * This is just the same as the `Cache` interface from `cache-manager` but you can
+ * use this as a provider token as well.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export abstract class Cache {}
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export interface Cache extends CoreCache {}
+
+/**
  * Module that provides Nest cache-manager.
  *
  * @see [Caching](https://docs.nestjs.com/techniques/caching)
@@ -15,8 +25,14 @@ import {
  * @publicApi
  */
 @Module({
-  providers: [createCacheManager()],
-  exports: [CACHE_MANAGER],
+  providers: [
+    createCacheManager(),
+    {
+      provide: Cache,
+      useExisting: CACHE_MANAGER,
+    }
+  ],
+  exports: [CACHE_MANAGER, Cache],
 })
 export class CacheModule extends ConfigurableModuleClass {
   /**
