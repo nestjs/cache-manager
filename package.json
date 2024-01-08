@@ -1,6 +1,6 @@
 {
   "name": "@nestjs/cache-manager",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "Nest - modern, fast, powerful node.js web framework (@cache-manager)",
   "author": "Kamil Mysliwiec",
   "license": "MIT",
