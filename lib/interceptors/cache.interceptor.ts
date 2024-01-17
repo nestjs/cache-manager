@@ -76,7 +76,7 @@ export class CacheInterceptor implements NestInterceptor {
             return;
           }
 
-          const args = [key, response];
+          const args = [key, await response];
           if (!isNil(ttl)) {
             args.push(this.cacheManagerIsv5OrGreater ? ttl : { ttl });
           }
