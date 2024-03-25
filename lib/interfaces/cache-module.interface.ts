@@ -1,18 +1,21 @@
 import { ConfigurableModuleAsyncOptions, Provider, Type } from '@nestjs/common';
 import { CacheManagerOptions } from './cache-manager.interface';
 
-export type CacheModuleOptions<
+export type CacheOptions<
   StoreConfig extends Record<any, any> = Record<string, any>,
 > =
   // Store-specific configuration takes precedence over cache module options due
   // to how `createCacheManager` is implemented.
-  CacheManagerOptions &
-    StoreConfig & {
-      /**
-       * If "true', register `CacheModule` as a global module.
-       */
-      isGlobal?: boolean;
-    };
+  CacheManagerOptions & StoreConfig;
+
+export type CacheModuleOptions<
+  StoreConfig extends Record<any, any> = Record<string, any>,
+> = CacheOptions<StoreConfig> & {
+  /**
+   * If "true', register `CacheModule` as a global module.
+   */
+  isGlobal?: boolean;
+};
 
 /**
  * Interface describing a `CacheOptionsFactory`.  Providers supplying configuration
@@ -26,8 +29,8 @@ export interface CacheOptionsFactory<
   StoreConfig extends Record<any, any> = Record<string, any>,
 > {
   createCacheOptions():
-    | Promise<CacheModuleOptions<StoreConfig>>
-    | CacheModuleOptions<StoreConfig>;
+    | Promise<CacheOptions<StoreConfig>>
+    | CacheOptions<StoreConfig>;
 }
 
 /**
@@ -40,7 +43,7 @@ export interface CacheOptionsFactory<
 export interface CacheModuleAsyncOptions<
   StoreConfig extends Record<any, any> = Record<string, any>,
 > extends ConfigurableModuleAsyncOptions<
-    CacheModuleOptions<StoreConfig>,
+    CacheOptions<StoreConfig>,
     keyof CacheOptionsFactory
   > {
   /**
@@ -59,9 +62,7 @@ export interface CacheModuleAsyncOptions<
    */
   useFactory?: (
     ...args: any[]
-  ) =>
-    | Promise<CacheModuleOptions<StoreConfig>>
-    | CacheModuleOptions<StoreConfig>;
+  ) => Promise<CacheOptions<StoreConfig>> | CacheOptions<StoreConfig>;
   /**
    * Dependencies that a Factory may inject.
    */
