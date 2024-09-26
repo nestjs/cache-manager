@@ -33,6 +33,7 @@ export class CacheInterceptor implements NestInterceptor {
   protected allowedMethods = ['GET'];
 
   private cacheManagerIsv5OrGreater: boolean;
+  private cacheManagerIsv6OrGreater: boolean;
 
   constructor(
     @Inject(CACHE_MANAGER) protected readonly cacheManager: any,
@@ -46,6 +47,7 @@ export class CacheInterceptor implements NestInterceptor {
       () => require('cache-manager'),
     );
     this.cacheManagerIsv5OrGreater = 'memoryStore' in cacheManagerPackage;
+    this.cacheManagerIsv6OrGreater = 'KeyvAdapter' in cacheManager;
   }
 
   async intercept(
@@ -78,7 +80,11 @@ export class CacheInterceptor implements NestInterceptor {
 
           const args = [key, response];
           if (!isNil(ttl)) {
-            args.push(this.cacheManagerIsv5OrGreater ? ttl : { ttl });
+            args.push(
+              this.cacheManagerIsv5OrGreater || this.cacheManagerIsv6OrGreater
+                ? ttl
+                : { ttl },
+            );
           }
 
           try {

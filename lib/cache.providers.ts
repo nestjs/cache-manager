@@ -7,6 +7,7 @@ import {
   CacheManagerOptions,
   CacheStore,
 } from './interfaces/cache-manager.interface';
+import { Keyv, KeyvStoreAdapter } from 'keyv';
 
 /**
  * Creates a CacheManager Provider.
@@ -22,10 +23,32 @@ export function createCacheManager(): Provider {
         require('cache-manager'),
       );
       const cacheManagerIsv5OrGreater = 'memoryStore' in cacheManager;
+      const cacheManagerIsv6OrGreater = 'KeyvAdapter' in cacheManager;
       const cachingFactory = async (
         store: CacheManagerOptions['store'],
         options: Omit<CacheManagerOptions, 'store'>,
       ): Promise<Record<string, any>> => {
+        if (cacheManagerIsv6OrGreater) {
+          return store
+            ? cacheManager.createCache({
+                stores: [
+                  new Keyv(
+                    {
+                      store,
+                    },
+                    {
+                      ...defaultCacheOptions,
+                      ...options,
+                    },
+                  ),
+                ],
+              })
+            : cacheManager.createCache({
+                ...defaultCacheOptions,
+                ...options,
+              });
+        }
+
         if (!cacheManagerIsv5OrGreater) {
           return cacheManager.caching({
             ...defaultCacheOptions,
@@ -33,8 +56,8 @@ export function createCacheManager(): Provider {
           });
         }
 
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        let cache: string | Function | CacheStore = 'memory';
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+        let cache: string | Function | CacheStore | KeyvStoreAdapter = 'memory';
         defaultCacheOptions.ttl *= 1000;
         if (typeof store === 'object') {
           if ('create' in store) {

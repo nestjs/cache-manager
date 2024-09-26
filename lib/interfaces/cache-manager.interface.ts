@@ -1,3 +1,5 @@
+import { KeyvStoreAdapter } from 'keyv';
+
 export interface LiteralObject {
   [key: string]: any;
 }
@@ -70,7 +72,7 @@ export interface CacheManagerOptions {
    * [Different stores](https://docs.nestjs.com/techniques/caching#different-stores)
    * for more info.
    */
-  store?: string | CacheStoreFactory | CacheStore;
+  store?: string | CacheStoreFactory | CacheStore | KeyvStoreAdapter;
   /**
    * Time to live - amount of time that a response is cached before it
    * is deleted. Subsequent request will call through the route handler and refresh
@@ -83,4 +85,8 @@ export interface CacheManagerOptions {
    */
   max?: number;
   isCacheableValue?: (value: any) => boolean;
+  /**
+   * Add Cache Manager v6, Namespace for the current instance.
+   */
+  namespace?: string;
 }
