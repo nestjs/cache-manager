@@ -1,24 +1,18 @@
 import { Module } from '@nestjs/common';
-import { redisStore } from 'cache-manager-redis-store';
 import { CacheModule } from '../../../lib';
 import { MultiStoreController } from './multi-store.controller';
+import KeyvRedis from '@keyv/redis';
+import { Keyv } from 'keyv';
+import { CacheableMemory } from 'cacheable';
 
 @Module({
   imports: [
-    CacheModule.register([
-      {
-        store: 'memory',
-        max: 100,
-        ttl: 50,
-      },
-      {
-        store: redisStore,
-        host: 'localhost',
-        port: 6379,
-        db: 0,
-        ttl: 50,
-      },
-    ]),
+    CacheModule.register({
+      stores: [
+        new Keyv({ store: new CacheableMemory({ ttl: 60000, lruSize: 5000 }) }),
+        new KeyvRedis('redis://192.168.100.1:6379'),
+      ],
+    }),
   ],
   controllers: [MultiStoreController],
 })

@@ -1,65 +1,4 @@
-import { KeyvStoreAdapter } from 'keyv';
-
-export interface LiteralObject {
-  [key: string]: any;
-}
-
-/**
- * Interface defining a cache store. Implement this interface to create a custom
- * cache store.
- *
- * @publicApi
- */
-export interface CacheStore {
-  /**
-   * Create a key/value pair in the cache.
-   *
-   * @param key cache key
-   * @param value cache value
-   */
-  set<T>(
-    key: string,
-    value: T,
-    options?: CacheStoreSetOptions<T> | number,
-  ): Promise<void> | void;
-  /**
-   * Retrieve a key/value pair from the cache.
-   *
-   * @param key cache key
-   */
-  get<T>(key: string): Promise<T | undefined> | T | undefined;
-  /**
-   * Destroy a key/value pair from the cache.
-   *
-   * @param key cache key
-   */
-  del?(key: string): void | Promise<void>;
-}
-
-export interface CacheStoreSetOptions<T> {
-  /**
-   * Time to live - amount of time in seconds that a response is cached before it
-   * is deleted. Defaults based on your cache manager settings.
-   */
-  ttl?: ((value: T) => number) | number;
-}
-
-/**
- * Interface defining a factory to create a cache store.
- *
- * @publicApi
- */
-export type CacheStoreFactory =
-  | {
-      /**
-       * Return a configured cache store.
-       *
-       * @param args Cache manager options received from `CacheModule.register()`
-       * or `CacheModule.registerAsync()`
-       */
-      create(args: LiteralObject): CacheStore;
-    }
-  | ((args: LiteralObject) => CacheStore | Promise<CacheStore>);
+import { Keyv, KeyvStoreAdapter } from 'keyv';
 
 /**
  * Interface defining Cache Manager configuration options.
@@ -72,21 +11,25 @@ export interface CacheManagerOptions {
    * [Different stores](https://docs.nestjs.com/techniques/caching#different-stores)
    * for more info.
    */
-  store?: string | CacheStoreFactory | CacheStore | KeyvStoreAdapter;
+  stores?: Keyv | KeyvStoreAdapter | (Keyv | KeyvStoreAdapter)[];
   /**
-   * Time to live - amount of time that a response is cached before it
-   * is deleted. Subsequent request will call through the route handler and refresh
-   * the cache.  Defaults to 5 seconds. In `cache-manager@^4` this value is in seconds.
-   * In `cache-manager@^5` this value is in milliseconds.
+   * Cache storage namespace, default `keyv`
+   * This is a global configuration, that will cover all store
+   */
+  namespace?: string;
+  /**
+   * Default time to live in milliseconds.
+   * The time to live in milliseconds. This is the maximum amount of time that an item can be in the cache before it is removed.
    */
   ttl?: number;
   /**
-   * Maximum number of responses to store in the cache.  Defaults to 100.
+   * Default refreshThreshold in milliseconds.
+   * If the remaining TTL is less than refreshThreshold, the system will update the value asynchronously in background.
    */
-  max?: number;
-  isCacheableValue?: (value: any) => boolean;
+  refreshThreshold?: number;
   /**
-   * Add Cache Manager v6, Namespace for the current instance.
+   * Default false
+   * If set to true, the system will not block when multiple stores are used. Here is how it affects tye type of functions:
    */
-  namespace?: string;
+  nonBlocking?: boolean;
 }
