@@ -14,7 +14,7 @@ export interface CacheManagerOptions {
   stores?: Keyv | KeyvStoreAdapter | (Keyv | KeyvStoreAdapter)[];
   /**
    * Cache storage namespace, default `keyv`
-   * This is a global configuration, that will cover all store
+   * This is a global configuration, that will cover all `KeyvStoreAdapter`
    */
   namespace?: string;
   /**
@@ -27,9 +27,4 @@ export interface CacheManagerOptions {
    * If the remaining TTL is less than refreshThreshold, the system will update the value asynchronously in background.
    */
   refreshThreshold?: number;
-  /**
-   * Default false
-   * If set to true, the system will not block when multiple stores are used. Here is how it affects tye type of functions:
-   */
-  nonBlocking?: boolean;
 }

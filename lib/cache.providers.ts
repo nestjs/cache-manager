@@ -29,8 +29,8 @@ export function createCacheManager(): Provider {
         }
         return new Keyv({
           store,
-          ...defaultCacheOptions,
-          ...options,
+          ttl: options.ttl || defaultCacheOptions.ttl,
+          namespace: options.namespace || defaultCacheOptions.namespace,
         });
       };
 
@@ -39,18 +39,23 @@ export function createCacheManager(): Provider {
             stores: await Promise.all(
               options.stores.map(store => cachingFactory(store, options)),
             ),
-            ...defaultCacheOptions,
-            ...options,
+            ttl: options.ttl || defaultCacheOptions.ttl,
+            refreshThreshold:
+              options.refreshThreshold || defaultCacheOptions.refreshThreshold,
           })
         : options.stores
           ? cacheManager.createCache({
               stores: [await cachingFactory(options.stores, options)],
-              ...defaultCacheOptions,
-              ...options,
+              ttl: options.ttl || defaultCacheOptions.ttl,
+              refreshThreshold:
+                options.refreshThreshold ||
+                defaultCacheOptions.refreshThreshold,
             })
           : cacheManager.createCache({
-              ...defaultCacheOptions,
-              ...options,
+              ttl: options.ttl || defaultCacheOptions.ttl,
+              refreshThreshold:
+                options.refreshThreshold ||
+                defaultCacheOptions.refreshThreshold,
             });
     },
     inject: [MODULE_OPTIONS_TOKEN],
