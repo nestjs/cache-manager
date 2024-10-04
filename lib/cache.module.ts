@@ -1,5 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { Events } from 'cache-manager';
+import { createCache } from 'cache-manager';
 import { CACHE_MANAGER } from './cache.constants';
 import { ConfigurableModuleClass } from './cache.module-definition';
 import { createCacheManager } from './cache.providers';
@@ -7,7 +7,6 @@ import {
   CacheModuleAsyncOptions,
   CacheModuleOptions,
 } from './interfaces/cache-module.interface';
-import EventEmitter from 'node:events';
 
 /**
  * This is just the same as the `Cache` interface from `cache-manager` but you can
@@ -15,42 +14,9 @@ import EventEmitter from 'node:events';
  */
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export abstract class Cache {}
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export interface Cache {
-  get: <T>(key: string) => Promise<T | null>;
-  mget: <T>(keys: string[]) => Promise<(Awaited<T> | null)[]>;
-  set: <T>(key: string, value: T, ttl?: number) => Promise<T>;
-  mset: <T>(
-    list: Array<{
-      key: string;
-      value: T;
-      ttl?: number;
-    }>,
-  ) => Promise<
-    {
-      key: string;
-      value: T;
-      ttl?: number;
-    }[]
-  >;
-  del: (key: string) => Promise<boolean>;
-  mdel: (keys: string[]) => Promise<boolean>;
-  clear: () => Promise<boolean>;
-  wrap: <T>(
-    key: string,
-    fnc: () => T | Promise<T>,
-    ttl?: number | ((value: T) => number),
-    refreshThreshold?: number,
-  ) => Promise<T>;
-  on: <E extends keyof Events>(
-    event: E,
-    listener: Events[E],
-  ) => EventEmitter<[never]>;
-  off: <E extends keyof Events>(
-    event: E,
-    listener: Events[E],
-  ) => EventEmitter<[never]>;
-}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging,@typescript-eslint/no-empty-object-type
+export interface Cache extends ReturnType<typeof createCache> {}
 
 /**
  * Module that provides Nest cache-manager.

@@ -1,10 +1,10 @@
 import { Provider } from '@nestjs/common';
-import { loadPackage } from '@nestjs/common/utils/load-package.util';
 import { CACHE_MANAGER } from './cache.constants';
 import { MODULE_OPTIONS_TOKEN } from './cache.module-definition';
 import { defaultCacheOptions as defaultCacheOptionsOrigin } from './default-options';
 import { CacheManagerOptions } from './interfaces/cache-manager.interface';
-import { Keyv } from 'keyv';
+import { Keyv, KeyvStoreAdapter } from 'keyv';
+import { createCache } from 'cache-manager';
 
 /**
  * Creates a CacheManager Provider.
@@ -16,15 +16,12 @@ export function createCacheManager(): Provider {
     provide: CACHE_MANAGER,
     useFactory: async (options: CacheManagerOptions) => {
       const defaultCacheOptions = { ...defaultCacheOptionsOrigin };
-      const cacheManager = loadPackage('cache-manager', 'CacheModule', () =>
-        require('cache-manager'),
-      );
 
       const cachingFactory = async (
-        store: CacheManagerOptions['stores'],
+        store: Keyv | KeyvStoreAdapter,
         options: Omit<CacheManagerOptions, 'stores'>,
-      ): Promise<Record<string, any>> => {
-        if (!store || (store && store instanceof Keyv)) {
+      ): Promise<Keyv> => {
+        if (store instanceof Keyv) {
           return store;
         }
         return new Keyv({
@@ -35,27 +32,27 @@ export function createCacheManager(): Provider {
       };
 
       return Array.isArray(options.stores)
-        ? cacheManager.createCache({
+        ? createCache({
             stores: await Promise.all(
               options.stores.map(store => cachingFactory(store, options)),
             ),
             ttl: options.ttl || defaultCacheOptions.ttl,
-            refreshThreshold:
-              options.refreshThreshold || defaultCacheOptions.refreshThreshold,
+            refreshThreshold: options.refreshThreshold,
+            nonBlocking: options.nonBlocking || defaultCacheOptions.nonBlocking,
           })
         : options.stores
-          ? cacheManager.createCache({
+          ? createCache({
               stores: [await cachingFactory(options.stores, options)],
               ttl: options.ttl || defaultCacheOptions.ttl,
-              refreshThreshold:
-                options.refreshThreshold ||
-                defaultCacheOptions.refreshThreshold,
+              refreshThreshold: options.refreshThreshold,
+              nonBlocking:
+                options.nonBlocking || defaultCacheOptions.nonBlocking,
             })
-          : cacheManager.createCache({
+          : createCache({
               ttl: options.ttl || defaultCacheOptions.ttl,
-              refreshThreshold:
-                options.refreshThreshold ||
-                defaultCacheOptions.refreshThreshold,
+              refreshThreshold: options.refreshThreshold,
+              nonBlocking:
+                options.nonBlocking || defaultCacheOptions.nonBlocking,
             });
     },
     inject: [MODULE_OPTIONS_TOKEN],
