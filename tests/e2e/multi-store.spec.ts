@@ -1,10 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { Server } from 'net';
 import request from 'supertest';
 import { MultiStoreModule } from '../src/multi-store/multi-store.module';
 
 describe('Caching Multi Store', () => {
-  let server: any;
+  let server: Server;
   let app: INestApplication;
 
   beforeAll(async () => {
