@@ -1,10 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { Server } from 'net';
 import request from 'supertest';
 import { CustomTtlModule } from '../src/custom-ttl/custom-ttl.module';
 
 describe('Caching Custom TTL', () => {
-  let server;
+  let server: Server;
   let app: INestApplication;
 
   beforeEach(async () => {

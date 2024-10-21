@@ -1,10 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { Server } from 'net';
 import request from 'supertest';
 import { DefaultTtlModule } from '../src/default-ttl/default-ttl.module';
 
 describe('Caching Default TTL', () => {
-  let server: any;
+  let server: Server;
   let app: INestApplication;
 
   describe('should use the same default ttl in every cach manager', () => {
@@ -38,5 +39,4 @@ describe('Caching Default TTL', () => {
       await app.close();
     });
   });
-
 });

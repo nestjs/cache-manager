@@ -1,10 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { Server } from 'net';
 import request from 'supertest';
 import { AsyncRegisterModule } from '../src/async-register/async-register.module';
 
 describe('Async Register', () => {
-  let server: any;
+  let server: Server;
   let app: INestApplication;
 
   beforeAll(async () => {
