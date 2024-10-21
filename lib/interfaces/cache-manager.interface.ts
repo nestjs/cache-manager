@@ -82,5 +82,15 @@ export interface CacheManagerOptions {
    * Maximum number of responses to store in the cache.  Defaults to 100.
    */
   max?: number;
+  /**
+   * optional, if refreshThreshold is set and after retrieving a value from cache the TTL will be checked.
+   * If the remaining TTL is less than refreshThreshold, the system will update the value asynchronously
+   */
+  refreshThreshold?: number;
+  /**
+   * optional, but if not set, background refresh error will be an unhandled
+   * promise rejection, which might crash your node process
+   */
+  onBackgroundRefreshError?: (error: any) => void;
   isCacheableValue?: (value: any) => boolean;
 }
