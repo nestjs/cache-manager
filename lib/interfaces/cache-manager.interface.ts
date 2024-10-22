@@ -23,8 +23,8 @@ export interface CacheManagerOptions {
    */
   ttl?: number;
   /**
-   * Default refreshThreshold in milliseconds.
-   * If the remaining TTL is less than refreshThreshold, the system will update the value asynchronously in background.
+   * optional, if refreshThreshold is set and after retrieving a value from cache the TTL will be checked.
+   * If the remaining TTL is less than refreshThreshold, the system will update the value asynchronously
    */
   refreshThreshold?: number;
   /**

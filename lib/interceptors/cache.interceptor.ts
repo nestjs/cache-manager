@@ -51,6 +51,8 @@ export class CacheInterceptor implements NestInterceptor {
     }
     try {
       const value = await this.cacheManager.get(key);
+      this.setHeadersWhenHttp(context, value);
+
       if (!isNil(value)) {
         return of(value);
       }
@@ -107,5 +109,17 @@ export class CacheInterceptor implements NestInterceptor {
   protected isRequestCacheable(context: ExecutionContext): boolean {
     const req = context.switchToHttp().getRequest();
     return this.allowedMethods.includes(req.method);
+  }
+
+  protected setHeadersWhenHttp(context: ExecutionContext, value: any): void {
+    if (!this.httpAdapterHost) {
+      return;
+    }
+    const { httpAdapter } = this.httpAdapterHost;
+    if (!httpAdapter) {
+      return;
+    }
+    const response = context.switchToHttp().getResponse();
+    httpAdapter.setHeader(response, 'X-Cache', isNil(value) ? 'MISS' : 'HIT');
   }
 }

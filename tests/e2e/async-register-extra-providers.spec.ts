@@ -1,10 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { Server } from 'net';
 import request from 'supertest';
 import { AsyncRegisterExtraModule } from '../src/async-register-extra-providers/async-register-extra.module';
 
 describe('Async Register Extra Providers', () => {
-  let server: any;
+  let server: Server;
   let app: INestApplication;
 
   beforeAll(async () => {
