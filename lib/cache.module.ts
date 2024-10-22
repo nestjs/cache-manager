@@ -1,5 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import type { Cache as CoreCache } from 'cache-manager'
+import { createCache } from 'cache-manager';
 import { CACHE_MANAGER } from './cache.constants';
 import { ConfigurableModuleClass } from './cache.module-definition';
 import { createCacheManager } from './cache.providers';
@@ -14,8 +14,9 @@ import {
  */
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export abstract class Cache {}
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export interface Cache extends CoreCache {}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging,@typescript-eslint/no-empty-object-type
+export interface Cache extends ReturnType<typeof createCache> {}
 
 /**
  * Module that provides Nest cache-manager.
@@ -30,7 +31,7 @@ export interface Cache extends CoreCache {}
     {
       provide: Cache,
       useExisting: CACHE_MANAGER,
-    }
+    },
   ],
   exports: [CACHE_MANAGER, Cache],
 })

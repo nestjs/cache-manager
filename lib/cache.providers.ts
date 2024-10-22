@@ -1,12 +1,10 @@
 import { Provider } from '@nestjs/common';
-import { loadPackage } from '@nestjs/common/utils/load-package.util';
 import { CACHE_MANAGER } from './cache.constants';
 import { MODULE_OPTIONS_TOKEN } from './cache.module-definition';
 import { defaultCacheOptions as defaultCacheOptionsOrigin } from './default-options';
-import {
-  CacheManagerOptions,
-  CacheStore,
-} from './interfaces/cache-manager.interface';
+import { CacheManagerOptions } from './interfaces/cache-manager.interface';
+import { Keyv, KeyvStoreAdapter } from 'keyv';
+import { createCache } from 'cache-manager';
 
 /**
  * Creates a CacheManager Provider.
@@ -18,46 +16,44 @@ export function createCacheManager(): Provider {
     provide: CACHE_MANAGER,
     useFactory: async (options: CacheManagerOptions) => {
       const defaultCacheOptions = { ...defaultCacheOptionsOrigin };
-      const cacheManager = loadPackage('cache-manager', 'CacheModule', () =>
-        require('cache-manager'),
-      );
-      const cacheManagerIsv5OrGreater = 'memoryStore' in cacheManager;
-      const cachingFactory = async (
-        store: CacheManagerOptions['store'],
-        options: Omit<CacheManagerOptions, 'store'>,
-      ): Promise<Record<string, any>> => {
-        if (!cacheManagerIsv5OrGreater) {
-          return cacheManager.caching({
-            ...defaultCacheOptions,
-            ...{ ...options, store },
-          });
-        }
 
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        let cache: string | Function | CacheStore = 'memory';
-        defaultCacheOptions.ttl *= 1000;
-        if (typeof store === 'object') {
-          if ('create' in store) {
-            cache = store.create;
-          } else {
-            cache = store;
-          }
-        } else if (typeof store === 'function') {
-          cache = store;
+      const cachingFactory = async (
+        store: Keyv | KeyvStoreAdapter,
+        options: Omit<CacheManagerOptions, 'stores'>,
+      ): Promise<Keyv> => {
+        if (store instanceof Keyv) {
+          return store;
         }
-        return cacheManager.caching(cache, {
-          ...defaultCacheOptions,
-          ...options,
+        return new Keyv({
+          store,
+          ttl: options.ttl || defaultCacheOptions.ttl,
+          namespace: options.namespace || defaultCacheOptions.namespace,
         });
       };
 
-      return Array.isArray(options)
-        ? cacheManager.multiCaching(
-            await Promise.all(
-              options.map(option => cachingFactory(option.store, option)),
+      return Array.isArray(options.stores)
+        ? createCache({
+            stores: await Promise.all(
+              options.stores.map(store => cachingFactory(store, options)),
             ),
-          )
-        : cachingFactory(options.store, options);
+            ttl: options.ttl || defaultCacheOptions.ttl,
+            refreshThreshold: options.refreshThreshold,
+            nonBlocking: options.nonBlocking || defaultCacheOptions.nonBlocking,
+          })
+        : options.stores
+          ? createCache({
+              stores: [await cachingFactory(options.stores, options)],
+              ttl: options.ttl || defaultCacheOptions.ttl,
+              refreshThreshold: options.refreshThreshold,
+              nonBlocking:
+                options.nonBlocking || defaultCacheOptions.nonBlocking,
+            })
+          : createCache({
+              ttl: options.ttl || defaultCacheOptions.ttl,
+              refreshThreshold: options.refreshThreshold,
+              nonBlocking:
+                options.nonBlocking || defaultCacheOptions.nonBlocking,
+            });
     },
     inject: [MODULE_OPTIONS_TOKEN],
   };
