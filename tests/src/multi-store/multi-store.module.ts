@@ -12,7 +12,7 @@ import { CacheableMemory } from 'cacheable';
         return {
           stores: [
             new Keyv({ store: new CacheableMemory({ ttl: 60000, lruSize: 5000 }) }),
-            new KeyvRedis('redis://192.168.100.1:6379'),
+            new KeyvRedis('redis://localhost:6379'),
           ]
         }
       }
