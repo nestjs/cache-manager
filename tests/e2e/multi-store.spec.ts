@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'net';
 import request from 'supertest';
+import { CACHE_MANAGER } from '../../lib';
 import { MultiStoreModule } from '../src/multi-store/multi-store.module';
 
 describe('Caching Multi Store', () => {
@@ -27,6 +28,7 @@ describe('Caching Multi Store', () => {
   });
 
   afterAll(async () => {
+    await app.get(CACHE_MANAGER).clear();
     await app.close();
   });
 });

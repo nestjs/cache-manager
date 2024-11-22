@@ -8,7 +8,6 @@ import {
   Optional,
   StreamableFile,
 } from '@nestjs/common';
-import { loadPackage } from '@nestjs/common/utils/load-package.util';
 import { isFunction, isNil } from '@nestjs/common/utils/shared.utils';
 import { HttpAdapterHost, Reflector } from '@nestjs/core';
 import { Observable, of } from 'rxjs';
@@ -32,21 +31,10 @@ export class CacheInterceptor implements NestInterceptor {
 
   protected allowedMethods = ['GET'];
 
-  private cacheManagerIsv5OrGreater: boolean;
-
   constructor(
     @Inject(CACHE_MANAGER) protected readonly cacheManager: any,
     protected readonly reflector: Reflector,
-  ) {
-    // We need to check if the cache-manager package is v5 or greater
-    // because the set method signature changed in v5
-    const cacheManagerPackage = loadPackage(
-      'cache-manager',
-      'CacheModule',
-      () => require('cache-manager'),
-    );
-    this.cacheManagerIsv5OrGreater = 'memoryStore' in cacheManagerPackage;
-  }
+  ) {}
 
   async intercept(
     context: ExecutionContext,
@@ -80,7 +68,7 @@ export class CacheInterceptor implements NestInterceptor {
 
           const args = [key, response];
           if (!isNil(ttl)) {
-            args.push(this.cacheManagerIsv5OrGreater ? ttl : { ttl });
+            args.push(ttl);
           }
 
           try {

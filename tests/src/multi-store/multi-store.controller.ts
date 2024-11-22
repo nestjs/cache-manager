@@ -1,6 +1,5 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { Cache } from 'cache-manager';
-import { CACHE_MANAGER } from '../../../lib';
+import { Cache, CACHE_MANAGER } from '../../../lib';
 
 @Controller()
 export class MultiStoreController {
