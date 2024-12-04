@@ -31,7 +31,7 @@
     "@types/supertest": "6.0.2",
     "@typescript-eslint/eslint-plugin": "8.17.0",
     "@typescript-eslint/parser": "8.17.0",
-    "cache-manager": "6.2.0",
+    "cache-manager": "6.3.0",
     "cacheable": "1.8.5",
     "eslint": "9.16.0",
     "eslint-config-prettier": "9.1.0",
