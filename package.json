@@ -32,7 +32,7 @@
     "@typescript-eslint/eslint-plugin": "8.18.0",
     "@typescript-eslint/parser": "8.18.0",
     "cache-manager": "6.3.1",
-    "cacheable": "1.8.6",
+    "cacheable": "1.8.7",
     "eslint": "9.17.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.31.0",
