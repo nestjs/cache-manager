@@ -1,6 +1,6 @@
 import { Provider } from '@nestjs/common';
 import { createCache } from 'cache-manager';
-import { Keyv, KeyvStoreAdapter } from 'keyv';
+import Keyv, { type KeyvStoreAdapter } from 'keyv';
 import { CACHE_MANAGER } from './cache.constants';
 import { MODULE_OPTIONS_TOKEN } from './cache.module-definition';
 import { CacheManagerOptions } from './interfaces/cache-manager.interface';
