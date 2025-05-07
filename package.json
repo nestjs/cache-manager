@@ -31,7 +31,7 @@
     "@types/jest": "29.5.14",
     "@types/node": "22.15.14",
     "@types/supertest": "6.0.3",
-    "cache-manager": "6.4.2",
+    "cache-manager": "6.4.3",
     "cacheable": "1.8.10",
     "eslint": "9.26.0",
     "eslint-config-prettier": "10.1.2",
