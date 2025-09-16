@@ -1,21 +1,18 @@
 import { ConfigurableModuleAsyncOptions, Provider, Type } from '@nestjs/common';
 import { CacheManagerOptions } from './cache-manager.interface';
 
-export type CacheOptions<
-  StoreConfig extends Record<any, any> = Record<string, any>,
-> =
+export type CacheOptions<StoreConfig extends Record<any, any> = Record<string, any>> =
   // Store-specific configuration takes precedence over cache module options due
   // to how `createCacheManager` is implemented.
   CacheManagerOptions & StoreConfig;
 
-export type CacheModuleOptions<
-  StoreConfig extends Record<any, any> = Record<string, any>,
-> = CacheOptions<StoreConfig> & {
-  /**
-   * If "true', register `CacheModule` as a global module.
-   */
-  isGlobal?: boolean;
-};
+export type CacheModuleOptions<StoreConfig extends Record<any, any> = Record<string, any>> =
+  CacheOptions<StoreConfig> & {
+    /**
+     * If "true', register `CacheModule` as a global module.
+     */
+    isGlobal?: boolean;
+  };
 
 /**
  * Interface describing a `CacheOptionsFactory`.  Providers supplying configuration
@@ -25,12 +22,8 @@ export type CacheModuleOptions<
  *
  * @publicApi
  */
-export interface CacheOptionsFactory<
-  StoreConfig extends Record<any, any> = Record<string, any>,
-> {
-  createCacheOptions():
-    | Promise<CacheOptions<StoreConfig>>
-    | CacheOptions<StoreConfig>;
+export interface CacheOptionsFactory<StoreConfig extends Record<any, any> = Record<string, any>> {
+  createCacheOptions(): Promise<CacheOptions<StoreConfig>> | CacheOptions<StoreConfig>;
 }
 
 /**
@@ -40,12 +33,8 @@ export interface CacheOptionsFactory<
  *
  * @publicApi
  */
-export interface CacheModuleAsyncOptions<
-  StoreConfig extends Record<any, any> = Record<string, any>,
-> extends ConfigurableModuleAsyncOptions<
-    CacheOptions<StoreConfig>,
-    keyof CacheOptionsFactory
-  > {
+export interface CacheModuleAsyncOptions<StoreConfig extends Record<any, any> = Record<string, any>>
+  extends ConfigurableModuleAsyncOptions<CacheOptions<StoreConfig>, keyof CacheOptionsFactory> {
   /**
    * Injection token resolving to an existing provider. The provider must implement
    * the `CacheOptionsFactory` interface.
@@ -60,9 +49,7 @@ export interface CacheModuleAsyncOptions<
    * Function returning options (or a Promise resolving to options) to configure the
    * cache module.
    */
-  useFactory?: (
-    ...args: any[]
-  ) => Promise<CacheOptions<StoreConfig>> | CacheOptions<StoreConfig>;
+  useFactory?: (...args: any[]) => Promise<CacheOptions<StoreConfig>> | CacheOptions<StoreConfig>;
   /**
    * Dependencies that a Factory may inject.
    */

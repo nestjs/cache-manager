@@ -28,9 +28,7 @@ export function createCacheManager(): Provider {
         });
       };
       const stores = Array.isArray(options.stores)
-        ? await Promise.all(
-            options.stores.map(store => cachingFactory(store, options)),
-          )
+        ? await Promise.all(options.stores.map(store => cachingFactory(store, options)))
         : options.stores
           ? [await cachingFactory(options.stores, options)]
           : undefined;

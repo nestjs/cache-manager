@@ -13,5 +13,4 @@ import { CACHE_TTL_METADATA } from '../cache.constants';
  * @publicApi
  */
 type CacheTTLFactory = (ctx: ExecutionContext) => Promise<number> | number;
-export const CacheTTL = (ttl: number | CacheTTLFactory) =>
-  SetMetadata(CACHE_TTL_METADATA, ttl);
+export const CacheTTL = (ttl: number | CacheTTLFactory) => SetMetadata(CACHE_TTL_METADATA, ttl);
