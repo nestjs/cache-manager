@@ -32,7 +32,7 @@
     "@types/node": "22.18.8",
     "@types/supertest": "6.0.3",
     "cache-manager": "7.2.3",
-    "cacheable": "2.0.2",
+    "cacheable": "2.0.3",
     "eslint": "9.36.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
