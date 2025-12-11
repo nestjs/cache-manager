@@ -43,9 +43,9 @@ export interface CacheOptionsFactory<
 export interface CacheModuleAsyncOptions<
   StoreConfig extends Record<any, any> = Record<string, any>,
 > extends ConfigurableModuleAsyncOptions<
-    CacheOptions<StoreConfig>,
-    keyof CacheOptionsFactory
-  > {
+  CacheOptions<StoreConfig>,
+  keyof CacheOptionsFactory
+> {
   /**
    * Injection token resolving to an existing provider. The provider must implement
    * the `CacheOptionsFactory` interface.
