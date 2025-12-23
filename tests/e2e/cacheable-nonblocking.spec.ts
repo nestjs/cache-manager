@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'net';
 import request from 'supertest';
-import { CACHE_MANAGER } from '../../lib';
 import { CacheableNonBlockingModule } from '../src/cacheable-nonblocking/cacheable-nonblocking.module';
 
 describe('Caching with Cacheable nonBlocking', () => {
@@ -28,7 +27,6 @@ describe('Caching with Cacheable nonBlocking', () => {
   });
 
   afterAll(async () => {
-    await app.get(CACHE_MANAGER).clear();
     await app.close();
   });
 });

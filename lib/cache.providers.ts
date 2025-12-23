@@ -16,10 +16,6 @@ function isCacheable(store: any): store is Cacheable {
   );
 }
 
-function assignOnModuleDestroy(target: any): void {
-  target.onModuleDestroy = target.disconnect;
-}
-
 /**
  * Creates a CacheManager Provider.
  *
@@ -35,11 +31,9 @@ export function createCacheManager(): Provider {
       ): Promise<Keyv | Cacheable> => {
         // If it's a Cacheable instance, return it directly to preserve nonBlocking mode
         if (isCacheable(store)) {
-          assignOnModuleDestroy(store);
           return store;
         }
         if (store instanceof Keyv) {
-          assignOnModuleDestroy(store);
           return store;
         }
         const keyv = new Keyv({
@@ -47,9 +41,9 @@ export function createCacheManager(): Provider {
           ttl: options.ttl,
           namespace: options.namespace,
         });
-        assignOnModuleDestroy(keyv);
         return keyv;
       };
+
       const stores = Array.isArray(options.stores)
         ? await Promise.all(
             options.stores.map(store => cachingFactory(store, options)),

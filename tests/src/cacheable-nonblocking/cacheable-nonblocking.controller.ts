@@ -10,8 +10,10 @@ export class CacheableNonBlockingController {
     const value = await this.cacheManager.get('cacheable-key');
     if (!value) {
       await this.cacheManager.set('cacheable-key', 'cacheable-value');
+    } else {
+      // invalidate the cache for demonstration purposes
+      await this.cacheManager.del('cacheable-key');
     }
     return value;
   }
 }
-
