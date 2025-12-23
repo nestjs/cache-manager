@@ -1,5 +1,7 @@
-import { SetMetadata } from '@nestjs/common';
+import { ExecutionContext, SetMetadata } from '@nestjs/common';
 import { CACHE_KEY_METADATA } from '../cache.constants';
+
+export type CacheKeyFactory = (ctx: ExecutionContext) => string;
 
 /**
  * Decorator that sets the caching key used to store/retrieve cached items for
@@ -14,4 +16,5 @@ import { CACHE_KEY_METADATA } from '../cache.constants';
  *
  * @publicApi
  */
-export const CacheKey = (key: string) => SetMetadata(CACHE_KEY_METADATA, key);
+export const CacheKey = (key: string | CacheKeyFactory) =>
+  SetMetadata(CACHE_KEY_METADATA, key);

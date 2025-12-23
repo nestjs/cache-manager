@@ -17,6 +17,7 @@ import {
   CACHE_MANAGER,
   CACHE_TTL_METADATA,
 } from '../cache.constants';
+import { CacheKeyFactory, CacheTTLFactory } from '../decorators';
 
 /**
  * @see [Caching](https://docs.nestjs.com/techniques/caching)
@@ -41,7 +42,7 @@ export class CacheInterceptor implements NestInterceptor {
     next: CallHandler,
   ): Promise<Observable<any>> {
     const key = this.trackBy(context);
-    const ttlValueOrFactory =
+    const ttlValueOrFactory: number | CacheTTLFactory | null =
       this.reflector.get(CACHE_TTL_METADATA, context.getHandler()) ??
       this.reflector.get(CACHE_TTL_METADATA, context.getClass()) ??
       null;
@@ -90,13 +91,13 @@ export class CacheInterceptor implements NestInterceptor {
   protected trackBy(context: ExecutionContext): string | undefined {
     const httpAdapter = this.httpAdapterHost.httpAdapter;
     const isHttpApp = httpAdapter && !!httpAdapter.getRequestMethod;
-    const cacheMetadata = this.reflector.get(
-      CACHE_KEY_METADATA,
-      context.getHandler(),
-    );
+    const cacheMetadataOrFactory: string | CacheKeyFactory | null =
+      this.reflector.get(CACHE_KEY_METADATA, context.getHandler()) ?? null;
 
-    if (!isHttpApp || cacheMetadata) {
-      return cacheMetadata;
+    if (!isHttpApp || cacheMetadataOrFactory) {
+      return isFunction(cacheMetadataOrFactory)
+        ? cacheMetadataOrFactory(context)
+        : cacheMetadataOrFactory;
     }
 
     const request = context.getArgByIndex(0);
