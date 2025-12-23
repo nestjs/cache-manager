@@ -28,9 +28,7 @@ describe('Caching with Cacheable nonBlocking', () => {
   });
 
   afterAll(async () => {
-    const cache = app.get(CACHE_MANAGER);
-    await cache.clear();
-    await cache.disconnect();
+    await app.get(CACHE_MANAGER).clear();
     await app.close();
   });
 });

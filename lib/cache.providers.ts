@@ -1,7 +1,7 @@
 import { Provider } from '@nestjs/common';
 import { createCache } from 'cache-manager';
-import Keyv, { type KeyvStoreAdapter } from 'keyv';
 import type { Cacheable } from 'cacheable';
+import Keyv, { type KeyvStoreAdapter } from 'keyv';
 import { CACHE_MANAGER } from './cache.constants';
 import { MODULE_OPTIONS_TOKEN } from './cache.module-definition';
 import { CacheManagerOptions } from './interfaces/cache-manager.interface';
@@ -14,6 +14,10 @@ function isCacheable(store: any): store is Cacheable {
     'secondary' in store &&
     'nonBlocking' in store
   );
+}
+
+function assignOnModuleDestroy(target: any): void {
+  target.onModuleDestroy = target.disconnect;
 }
 
 /**
@@ -31,16 +35,20 @@ export function createCacheManager(): Provider {
       ): Promise<Keyv | Cacheable> => {
         // If it's a Cacheable instance, return it directly to preserve nonBlocking mode
         if (isCacheable(store)) {
+          assignOnModuleDestroy(store);
           return store;
         }
         if (store instanceof Keyv) {
+          assignOnModuleDestroy(store);
           return store;
         }
-        return new Keyv({
+        const keyv = new Keyv({
           store,
           ttl: options.ttl,
           namespace: options.namespace,
         });
+        assignOnModuleDestroy(keyv);
+        return keyv;
       };
       const stores = Array.isArray(options.stores)
         ? await Promise.all(
