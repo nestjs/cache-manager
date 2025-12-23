@@ -1,5 +1,6 @@
 import { ExecutionContext, SetMetadata } from '@nestjs/common';
 import { CACHE_KEY_METADATA } from '../cache.constants';
+
 export type CacheKeyFactory = (ctx: ExecutionContext) => string;
 
 /**
