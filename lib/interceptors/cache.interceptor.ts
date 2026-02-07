@@ -100,14 +100,10 @@ export class CacheInterceptor implements NestInterceptor {
       if (isFunction(cacheMetadataOrFactory)) {
         const cacheKey = cacheMetadataOrFactory(context);
 
-        if (
-          cacheKey === undefined ||
-          cacheKey === null ||
-          typeof cacheKey === 'string'
-        ) {
-          return cacheKey;
-        } else {
+        if (typeof cacheKey === 'object' && 'then' in cacheKey) {
           return await cacheKey;
+        } else {
+          return cacheKey;
         }
       } else {
         return cacheMetadataOrFactory;
