@@ -29,7 +29,7 @@
     "@nestjs/platform-express": "11.1.13",
     "@nestjs/testing": "11.1.13",
     "@types/jest": "30.0.0",
-    "@types/node": "24.10.11",
+    "@types/node": "24.10.13",
     "@types/supertest": "6.0.3",
     "cache-manager": "7.2.8",
     "cacheable": "2.3.2",
@@ -49,7 +49,7 @@
     "supertest": "7.2.2",
     "ts-jest": "29.4.6",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.54.0"
+    "typescript-eslint": "8.55.0"
   },
   "peerDependencies": {
     "@nestjs/common": "^9.0.0 || ^10.0.0 || ^11.0.0",
