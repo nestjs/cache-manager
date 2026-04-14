@@ -28,7 +28,7 @@ import { CacheKeyFactory, CacheTTLFactory } from '../decorators';
 export class CacheInterceptor implements NestInterceptor {
   @Optional()
   @Inject()
-  protected readonly httpAdapterHost: HttpAdapterHost;
+  protected readonly httpAdapterHost!: HttpAdapterHost;
 
   protected allowedMethods = ['GET'];
 
@@ -77,7 +77,7 @@ export class CacheInterceptor implements NestInterceptor {
           } catch (err) {
             Logger.error(
               `An error has occurred when inserting "key: ${key}", "value: ${response}"`,
-              err.stack,
+              (err as Error).stack,
               'CacheInterceptor',
             );
           }
@@ -91,8 +91,8 @@ export class CacheInterceptor implements NestInterceptor {
   protected trackBy(context: ExecutionContext): string | undefined {
     const httpAdapter = this.httpAdapterHost.httpAdapter;
     const isHttpApp = httpAdapter && !!httpAdapter.getRequestMethod;
-    const cacheMetadataOrFactory: string | CacheKeyFactory | null =
-      this.reflector.get(CACHE_KEY_METADATA, context.getHandler()) ?? null;
+    const cacheMetadataOrFactory: string | CacheKeyFactory | undefined =
+      this.reflector.get(CACHE_KEY_METADATA, context.getHandler()) ?? undefined;
 
     if (!isHttpApp || cacheMetadataOrFactory) {
       return isFunction(cacheMetadataOrFactory)

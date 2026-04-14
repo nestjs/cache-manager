@@ -12,10 +12,8 @@ import {
  * This is just the same as the `Cache` interface from `cache-manager` but you can
  * use this as a provider token as well.
  */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export abstract class Cache {}
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging,@typescript-eslint/no-empty-object-type
 export interface Cache extends ReturnType<typeof createCache> {}
 
 /**
@@ -69,7 +67,7 @@ export class CacheModule extends ConfigurableModuleClass {
       global: options.isGlobal,
       ...moduleDefinition,
       providers: options.extraProviders
-        ? moduleDefinition.providers.concat(options.extraProviders)
+        ? (moduleDefinition.providers ?? []).concat(options.extraProviders)
         : moduleDefinition.providers,
     };
   }
