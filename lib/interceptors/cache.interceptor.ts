@@ -88,9 +88,9 @@ export class CacheInterceptor implements NestInterceptor {
     }
   }
 
-  protected async trackBy(
+  protected trackBy(
     context: ExecutionContext,
-  ): Promise<string | undefined | null> {
+  ): Promise<string | undefined | null> | string | undefined | null {
     const httpAdapter = this.httpAdapterHost.httpAdapter;
     const isHttpApp = httpAdapter && !!httpAdapter.getRequestMethod;
     const cacheMetadataOrFactory: string | CacheKeyFactory | undefined =
@@ -99,12 +99,7 @@ export class CacheInterceptor implements NestInterceptor {
     if (!isHttpApp || cacheMetadataOrFactory) {
       if (isFunction(cacheMetadataOrFactory)) {
         const cacheKey = cacheMetadataOrFactory(context);
-
-        if (typeof cacheKey === 'object' && isFunction(cacheKey['then'])) {
-          return await cacheKey;
-        } else {
-          return cacheKey;
-        }
+        return cacheKey;
       } else {
         return cacheMetadataOrFactory;
       }
