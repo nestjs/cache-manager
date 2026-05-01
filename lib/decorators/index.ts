@@ -1,2 +1,2 @@
-export * from './cache-key.decorator';
-export * from './cache-ttl.decorator';
+export * from './cache-key.decorator.js';
+export * from './cache-ttl.decorator.js';

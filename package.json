@@ -1,6 +1,7 @@
 {
   "name": "@nestjs/cache-manager",
   "version": "3.1.2",
+  "type": "module",
   "description": "Nest - modern, fast, powerful node.js web framework (@cache-manager)",
   "author": "Kamil Mysliwiec",
   "license": "MIT",
@@ -17,6 +18,14 @@
     "prerelease": "npm run build",
     "release": "release-it",
     "prepare": "husky"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
   "devDependencies": {
     "@commitlint/cli": "20.5.3",
