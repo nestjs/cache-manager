@@ -2,9 +2,9 @@ import { Provider } from '@nestjs/common';
 import { createCache } from 'cache-manager';
 import type { Cacheable } from 'cacheable';
 import Keyv, { type KeyvStoreAdapter } from 'keyv';
-import { CACHE_MANAGER } from './cache.constants';
-import { MODULE_OPTIONS_TOKEN } from './cache.module-definition';
-import { CacheManagerOptions } from './interfaces/cache-manager.interface';
+import { CACHE_MANAGER } from './cache.constants.js';
+import { MODULE_OPTIONS_TOKEN } from './cache.module-definition.js';
+import { CacheManagerOptions } from './interfaces/cache-manager.interface.js';
 
 function isCacheable(store: any): store is Cacheable {
   return (

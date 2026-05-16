@@ -1,5 +1,5 @@
 import { ExecutionContext, SetMetadata } from '@nestjs/common';
-import { CACHE_TTL_METADATA } from '../cache.constants';
+import { CACHE_TTL_METADATA } from '../cache.constants.js';
 export type CacheTTLFactory = (
   ctx: ExecutionContext,
 ) => Promise<number> | number;

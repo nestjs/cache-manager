@@ -1,5 +1,5 @@
 import { ConfigurableModuleAsyncOptions, Provider, Type } from '@nestjs/common';
-import { CacheManagerOptions } from './cache-manager.interface';
+import { CacheManagerOptions } from './cache-manager.interface.js';
 
 export type CacheOptions<
   StoreConfig extends Record<any, any> = Record<string, any>,

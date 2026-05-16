@@ -1,12 +1,12 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { createCache } from 'cache-manager';
-import { CACHE_MANAGER } from './cache.constants';
-import { ConfigurableModuleClass } from './cache.module-definition';
-import { createCacheManager } from './cache.providers';
+import { CACHE_MANAGER } from './cache.constants.js';
+import { ConfigurableModuleClass } from './cache.module-definition.js';
+import { createCacheManager } from './cache.providers.js';
 import {
   CacheModuleAsyncOptions,
   CacheModuleOptions,
-} from './interfaces/cache-module.interface';
+} from './interfaces/cache-module.interface.js';
 
 /**
  * This is just the same as the `Cache` interface from `cache-manager` but you can

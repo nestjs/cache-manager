@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "NodeNext",
     "declaration": true,
     "removeComments": false,
     "noLib": false,
@@ -8,6 +8,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "target": "ES2021",
+    "moduleResolution": "NodeNext",
     "sourceMap": false,
     "outDir": "./dist",
     "rootDir": "./lib",
