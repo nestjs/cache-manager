@@ -16,6 +16,21 @@ function isCacheable(store: any): store is Cacheable {
   );
 }
 
+function isKeyvInstance(store: unknown): store is Keyv {
+  return (
+    !!store &&
+    typeof store === 'object' &&
+    'opts' in store &&
+    'hooks' in store &&
+    'stats' in store &&
+    typeof (store as Keyv).get === 'function' &&
+    typeof (store as Keyv).set === 'function' &&
+    typeof (store as Keyv).delete === 'function' &&
+    typeof (store as Keyv).clear === 'function' &&
+    typeof (store as Keyv).disconnect === 'function'
+  );
+}
+
 /**
  * Creates a CacheManager Provider.
  *
@@ -33,7 +48,7 @@ export function createCacheManager(): Provider {
         if (isCacheable(store)) {
           return store;
         }
-        if (store instanceof Keyv) {
+        if (isKeyvInstance(store)) {
           return store;
         }
         const keyv = new Keyv({
