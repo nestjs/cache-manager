@@ -1,4 +1,4 @@
-import { MODULE_OPTIONS_TOKEN } from './cache.module-definition';
+import { MODULE_OPTIONS_TOKEN } from './cache.module-definition.js';
 
 export const CACHE_MANAGER = 'CACHE_MANAGER';
 export const CACHE_KEY_METADATA = 'cache_module:cache_key';

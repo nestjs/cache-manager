@@ -8,7 +8,6 @@ import {
   Optional,
   StreamableFile,
 } from '@nestjs/common';
-import { isFunction, isNil } from '@nestjs/common/utils/shared.utils';
 import { HttpAdapterHost, Reflector } from '@nestjs/core';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -16,8 +15,18 @@ import {
   CACHE_KEY_METADATA,
   CACHE_MANAGER,
   CACHE_TTL_METADATA,
-} from '../cache.constants';
-import { CacheKeyFactory, CacheTTLFactory } from '../decorators';
+} from '../cache.constants.js';
+import { CacheKeyFactory, CacheTTLFactory } from '../decorators/index.js';
+
+const isCacheKeyFactory = (
+  value: string | CacheKeyFactory | undefined,
+): value is CacheKeyFactory => typeof value === 'function';
+
+const isCacheTTLFactory = (
+  value: number | CacheTTLFactory | null,
+): value is CacheTTLFactory => typeof value === 'function';
+
+const isNil = (value: unknown): value is null | undefined => value == null;
 
 /**
  * @see [Caching](https://docs.nestjs.com/techniques/caching)
@@ -57,7 +66,7 @@ export class CacheInterceptor implements NestInterceptor {
       if (!isNil(value)) {
         return of(value);
       }
-      const ttl = isFunction(ttlValueOrFactory)
+      const ttl = isCacheTTLFactory(ttlValueOrFactory)
         ? await ttlValueOrFactory(context)
         : ttlValueOrFactory;
 
@@ -97,7 +106,7 @@ export class CacheInterceptor implements NestInterceptor {
       this.reflector.get(CACHE_KEY_METADATA, context.getHandler()) ?? undefined;
 
     if (!isHttpApp || cacheMetadataOrFactory) {
-      if (isFunction(cacheMetadataOrFactory)) {
+      if (isCacheKeyFactory(cacheMetadataOrFactory)) {
         const cacheKey = cacheMetadataOrFactory(context);
         return cacheKey;
       } else {

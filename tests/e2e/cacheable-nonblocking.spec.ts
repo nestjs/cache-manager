@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'net';
 import request from 'supertest';
-import { CacheableNonBlockingModule } from '../src/cacheable-nonblocking/cacheable-nonblocking.module';
+import { CacheableNonBlockingModule } from '../src/cacheable-nonblocking/cacheable-nonblocking.module.js';
 
 describe('Caching with Cacheable nonBlocking', () => {
   let server: Server;

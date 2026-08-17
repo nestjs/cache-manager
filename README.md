@@ -24,6 +24,12 @@
 $ npm i --save @nestjs/cache-manager cache-manager
 ```
 
+### Requirements
+
+This package ships as ESM only. It requires Node.js `^20.19.0 || ^22.12.0 || >=24.0.0` — the versions in which `require(esm)` is available unflagged.
+
+CommonJS applications (including the default `nest new` setup) can keep using a regular `import` statement: TypeScript compiles it to `require()`, and Node loads the ESM build through `require(esm)`. On older Node.js versions that call fails with `ERR_REQUIRE_ESM`; upgrade Node.js or switch your application to ESM.
+
 ## Quick Start
 
 [Overview & Tutorial](https://docs.nestjs.com/techniques/caching)

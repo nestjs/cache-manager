@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CacheModule } from '../../../lib';
-import { CacheableNonBlockingController } from './cacheable-nonblocking.controller';
+import { CacheModule } from '../../../lib/index.js';
+import { CacheableNonBlockingController } from './cacheable-nonblocking.controller.js';
 import KeyvRedis from '@keyv/redis';
 import { Keyv } from 'keyv';
 import { Cacheable, CacheableMemory } from 'cacheable';

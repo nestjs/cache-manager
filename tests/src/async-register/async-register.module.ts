@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { CacheModule } from '../../../lib';
-import { AsyncRegisterController } from './async-register.controller';
-import { CacheConfig } from './config/cache.config';
+import { CacheModule } from '../../../lib/index.js';
+import { AsyncRegisterController } from './async-register.controller.js';
+import { CacheConfig } from './config/cache.config.js';
 
 @Module({
   imports: [
