@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CacheModuleOptions, CacheOptionsFactory } from '../../../../lib';
+import {
+  CacheModuleOptions,
+  CacheOptionsFactory,
+} from '../../../../lib/index.js';
 
 @Injectable()
 export class CacheConfig implements CacheOptionsFactory {

@@ -1,5 +1,5 @@
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
-import { CacheInterceptor, CacheTTL } from '../../../lib';
+import { CacheInterceptor, CacheTTL } from '../../../lib/index.js';
 
 @Controller()
 @CacheTTL(600)

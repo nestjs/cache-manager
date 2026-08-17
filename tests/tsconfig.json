@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -8,6 +10,5 @@
     "skipLibCheck": true,
     "types": ["vitest/globals"]
   },
-  "include": ["**/*.ts"],
-  "references": [{ "path": ".." }]
+  "include": ["**/*.ts", "../lib/**/*.ts"]
 }

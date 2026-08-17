@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CacheModule } from '../../../lib';
-import { CustomTtlController } from './custom-ttl.controller';
+import { CacheModule } from '../../../lib/index.js';
+import { CustomTtlController } from './custom-ttl.controller.js';
 
 @Module({
   imports: [CacheModule.register()],

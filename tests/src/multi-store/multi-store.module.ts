@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CacheModule } from '../../../lib';
-import { MultiStoreController } from './multi-store.controller';
+import { CacheModule } from '../../../lib/index.js';
+import { MultiStoreController } from './multi-store.controller.js';
 import KeyvRedis from '@keyv/redis';
 import { Keyv } from 'keyv';
 import { CacheableMemory } from 'cacheable';

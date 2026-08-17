@@ -2,8 +2,8 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'net';
 import request from 'supertest';
-import { CACHE_MANAGER } from '../../lib';
-import { MultiStoreModule } from '../src/multi-store/multi-store.module';
+import { CACHE_MANAGER } from '../../lib/index.js';
+import { MultiStoreModule } from '../src/multi-store/multi-store.module.js';
 
 describe('Caching Multi Store', () => {
   let server: Server;

@@ -1,5 +1,5 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { Cache, CACHE_MANAGER } from '../../../lib';
+import { Cache, CACHE_MANAGER } from '../../../lib/index.js';
 
 @Controller()
 export class CacheableNonBlockingController {

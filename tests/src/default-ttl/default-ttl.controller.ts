@@ -1,6 +1,6 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { Cache } from '../../../lib';
-import { CACHE_MANAGER } from '../../../lib';
+import { Cache } from '../../../lib/index.js';
+import { CACHE_MANAGER } from '../../../lib/index.js';
 
 @Controller()
 export class DefaultTtlController {
