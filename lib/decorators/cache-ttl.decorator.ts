@@ -7,9 +7,9 @@ export type CacheTTLFactory = (
 /**
  * Decorator that sets the cache ttl setting the duration for cache expiration.
  *
- * For example: `@CacheTTL(5)`
+ * For example: `@CacheTTL(5000)`
  *
- * @param ttl number set the cache expiration time
+ * @param ttl number set the cache expiration time, in milliseconds
  *
  * @see [Caching](https://docs.nestjs.com/techniques/caching)
  *
