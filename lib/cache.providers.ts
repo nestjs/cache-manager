@@ -49,6 +49,21 @@ export function createCacheManager(): Provider {
           return store;
         }
         if (isKeyvInstance(store)) {
+          if (
+            options.namespace &&
+            (!store.opts?.namespace || store.opts?.namespace === 'keyv')
+          ) {
+            store.namespace = options.namespace;
+            if (store.opts) {
+              store.opts.namespace = options.namespace;
+            }
+          }
+          if (options.ttl !== undefined && store.opts?.ttl === undefined) {
+            store.ttl = options.ttl;
+            if (store.opts) {
+              store.opts.ttl = options.ttl;
+            }
+          }
           return store;
         }
         const keyv = new Keyv({
