@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 aliases:
   - &restore-cache
@@ -34,14 +34,19 @@ jobs:
           command: npm run build
   integration_tests:
     working_directory: ~/nest
-    machine: true
+    machine:
+      image: ubuntu-2204:current
     steps:
       - checkout
       - run:
-          name: Prepare nvm
+          name: Prepare Node.js
           command: |
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
-            echo ' [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+            source $BASH_ENV
+            nvm install v24.21.0
+            nvm alias default v24.21.0
+            echo 'nvm use default > /dev/null || true' >> $BASH_ENV
       - run:
           name: Install Docker Compose
           command: |
