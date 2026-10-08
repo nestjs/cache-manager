@@ -49,6 +49,15 @@ export function createCacheManager(): Provider {
           return store;
         }
         if (isKeyvInstance(store)) {
+          // Apply the module namespace unless the instance has a custom one
+          // ("keyv" is Keyv's default, so it is treated as not set).
+          // TTL is not applied here as cache-manager already passes the module ttl on every write.
+          if (
+            options.namespace &&
+            (!store.namespace || store.namespace === 'keyv')
+          ) {
+            store.namespace = options.namespace;
+          }
           return store;
         }
         const keyv = new Keyv({
