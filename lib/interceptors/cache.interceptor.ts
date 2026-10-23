@@ -8,6 +8,7 @@ import {
   Optional,
   StreamableFile,
 } from '@nestjs/common';
+import { SSE_METADATA } from '@nestjs/common/constants.js';
 import { HttpAdapterHost, Reflector } from '@nestjs/core';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -50,6 +51,9 @@ export class CacheInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler,
   ): Promise<Observable<any>> {
+    if (this.reflector.get(SSE_METADATA, context.getHandler())) {
+      return next.handle();
+    }
     const key = await this.trackBy(context);
     const ttlValueOrFactory: number | CacheTTLFactory | null =
       this.reflector.get(CACHE_TTL_METADATA, context.getHandler()) ??
