@@ -131,7 +131,7 @@ export class CacheInterceptor implements NestInterceptor {
   }
 
   protected setHeadersWhenHttp(context: ExecutionContext, value: any): void {
-    if (!this.httpAdapterHost) {
+    if (context.getType() !== 'http' || !this.httpAdapterHost) {
       return;
     }
     const { httpAdapter } = this.httpAdapterHost;
