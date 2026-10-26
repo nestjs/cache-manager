@@ -20,3 +20,6 @@ renovate.json
 
 # ci
 .circleci
+
+# Claude Code
+.claude/
