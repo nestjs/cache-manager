@@ -87,7 +87,10 @@ export function createCacheManager(): Provider {
             nonBlocking: options.nonBlocking,
           });
 
-      (cacheManager as any).onModuleDestroy = async () => {
+      // Disconnect in `onApplicationShutdown`, after the HTTP server has closed
+      // and after the `onModuleDestroy` phase, where workers drain: work still
+      // in flight before that may use the cache.
+      (cacheManager as any).onApplicationShutdown = async () => {
         if (!stores) {
           return;
         }

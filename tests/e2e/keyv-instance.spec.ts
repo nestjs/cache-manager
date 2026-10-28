@@ -20,7 +20,7 @@ describe('Keyv instance detection', () => {
 
     expect(cacheManager.stores).toEqual([foreignKeyv]);
 
-    await cacheManager.onModuleDestroy();
+    await cacheManager.onApplicationShutdown();
 
     expect(foreignKeyv.disconnect).toHaveBeenCalledTimes(1);
   });
