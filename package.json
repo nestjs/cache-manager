@@ -36,7 +36,7 @@
   "devDependencies": {
     "@commitlint/cli": "21.2.4",
     "@commitlint/config-angular": "21.2.4",
-    "@keyv/redis": "5.1.6",
+    "@keyv/redis": "6.1.0",
     "@nestjs/common": "12.3.2",
     "@nestjs/core": "12.3.2",
     "@nestjs/platform-express": "12.3.2",
