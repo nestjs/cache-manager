@@ -30,6 +30,16 @@ const isCacheTTLFactory = (
 const isNil = (value: unknown): value is null | undefined => value == null;
 
 /**
+ * Whether the router streams this value instead of serializing it: a web
+ * `Response`, or an async iterable that is not also a thenable. It can only be
+ * read once, so a cached one has nothing left to send.
+ */
+const isStreamingBody = (value: any): boolean =>
+  (typeof value?.[Symbol.asyncIterator] === 'function' &&
+    typeof value.then !== 'function') ||
+  Object.prototype.toString.call(value) === '[object Response]';
+
+/**
  * @see [Caching](https://docs.nestjs.com/techniques/caching)
  *
  * @publicApi
@@ -76,7 +86,7 @@ export class CacheInterceptor implements NestInterceptor {
 
       return next.handle().pipe(
         tap(async response => {
-          if (response instanceof StreamableFile) {
+          if (response instanceof StreamableFile || isStreamingBody(response)) {
             return;
           }
 
