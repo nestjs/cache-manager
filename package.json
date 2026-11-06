@@ -2,7 +2,17 @@
   "name": "@nestjs/cache-manager",
   "version": "12.0.2",
   "type": "module",
-  "description": "Nest - modern, fast, powerful node.js web framework (@cache-manager)",
+  "description": "Caching for NestJS: an injectable cache and an interceptor that caches responses, in memory or in stores such as Redis, built on cache-manager.",
+  "keywords": [
+    "nestjs",
+    "nest",
+    "cache",
+    "caching",
+    "cache-manager",
+    "redis",
+    "keyv",
+    "interceptor"
+  ],
   "author": "Kamil Mysliwiec",
   "license": "MIT",
   "url": "https://github.com/nestjs/cache-manager#readme",
