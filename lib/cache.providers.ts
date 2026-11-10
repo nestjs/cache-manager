@@ -17,10 +17,10 @@ function isCacheable(store: any): store is Cacheable {
 }
 
 function isKeyvInstance(store: unknown): store is Keyv {
+  // Keyv 6 instances have no `opts`; store adapters may have `hooks` but not `stats`.
   return (
     !!store &&
     typeof store === 'object' &&
-    'opts' in store &&
     'hooks' in store &&
     'stats' in store &&
     typeof (store as Keyv).get === 'function' &&

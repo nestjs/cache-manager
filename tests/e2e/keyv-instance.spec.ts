@@ -1,4 +1,5 @@
 import Keyv from 'keyv';
+import Keyv6 from 'keyv6';
 import { createCacheManager } from '../../lib/cache.providers';
 
 describe('Keyv instance detection', () => {
@@ -23,6 +24,16 @@ describe('Keyv instance detection', () => {
     await cacheManager.onApplicationShutdown();
 
     expect(foreignKeyv.disconnect).toHaveBeenCalledTimes(1);
+  });
+
+  it('should preserve a Keyv 6 instance instead of wrapping it again', async () => {
+    const keyv = new Keyv6();
+    const provider = createCacheManager();
+    const cacheManager = await provider.useFactory({
+      stores: [keyv],
+    });
+
+    expect(cacheManager.stores[0]).toBe(keyv);
   });
 
   it('should apply module namespace to a Keyv instance', async () => {
