@@ -47,17 +47,11 @@ jobs:
             nvm install v24.21.0
             nvm alias default v24.21.0
             echo 'nvm use default > /dev/null || true' >> $BASH_ENV
-      - run:
-          name: Install Docker Compose
-          command: |
-            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - *install-deps
       - run:
           name: Prepare
           command: |
-            docker-compose up -d
+            docker compose up -d
             sleep 10
       - run:
           name: List containers
