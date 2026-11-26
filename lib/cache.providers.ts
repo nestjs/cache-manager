@@ -85,6 +85,7 @@ export function createCacheManager(): Provider {
             ttl: options.ttl,
             refreshThreshold: options.refreshThreshold,
             nonBlocking: options.nonBlocking,
+            cacheId: options.cacheId,
           });
 
       // Disconnect in `onApplicationShutdown`, after the HTTP server has closed
